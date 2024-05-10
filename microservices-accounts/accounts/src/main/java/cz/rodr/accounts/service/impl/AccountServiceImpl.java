@@ -3,7 +3,7 @@ package cz.rodr.accounts.service.impl;
 import cz.rodr.accounts.constants.AccountsConstants;
 import cz.rodr.accounts.dto.AccountsDto;
 import cz.rodr.accounts.dto.CustomerDto;
-import cz.rodr.accounts.entity.Accounts;
+import cz.rodr.accounts.entity.Account;
 import cz.rodr.accounts.entity.Customer;
 import cz.rodr.accounts.exception.CustomerAlreadyExistsException;
 import cz.rodr.accounts.exception.ResourceNotFoundException;
@@ -15,7 +15,6 @@ import cz.rodr.accounts.service.IAccountsService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
 
@@ -38,8 +37,8 @@ public class AccountServiceImpl implements IAccountsService {
         accountsRepository.save(createNewAccount(savedCustomer));
     }
 
-    private Accounts createNewAccount(Customer customer) {
-        Accounts newAccount = new Accounts();
+    private Account createNewAccount(Customer customer) {
+        Account newAccount = new Account();
         newAccount.setCustomerId(customer.getCustomerId());
         long randomAccNumber = 1000000000L + new Random().nextInt(900000000);
         newAccount.setAccountNumber(randomAccNumber);
@@ -53,7 +52,7 @@ public class AccountServiceImpl implements IAccountsService {
         Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
                 () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
         );
-        Accounts accounts = accountsRepository.findByCustomerId(customer.getCustomerId()).orElseThrow(
+        Account accounts = accountsRepository.findByCustomerId(customer.getCustomerId()).orElseThrow(
                 () -> new ResourceNotFoundException("Accounts", "customerId", customer.getCustomerId().toString())
         );
         CustomerDto customerDto = CustomerMapper.mapToCustomerDto(customer, new CustomerDto());
@@ -67,7 +66,7 @@ public class AccountServiceImpl implements IAccountsService {
         boolean isUpdated = false;
         AccountsDto accountsDto = customerDto.getAccountsDto();
         if(accountsDto !=null ){
-            Accounts accounts = accountsRepository.findById(accountsDto.getAccountNumber()).orElseThrow(
+            Account accounts = accountsRepository.findById(accountsDto.getAccountNumber()).orElseThrow(
                     () -> new ResourceNotFoundException("Account", "AccountNumber", accountsDto.getAccountNumber().toString())
             );
             AccountsMapper.mapToAccounts(accountsDto, accounts);
