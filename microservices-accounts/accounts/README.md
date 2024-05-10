@@ -1,9 +1,9 @@
-Project based on Udemy course "Master Microservices with SpringBoot, Docker, Kubernetes"
+Recommended - 1 database for 1 microservice.
 
-Accounts microservice offers a REST API that let you:
-- create new account
-- fetch account details
-- update an account
-- delete an account.
-
-DB used: H2 in-memory
+1. Execute:
+   docker run -p 3306:3306 --name accountsdb -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=accountsdb -d mysql
+- e = environment variable
+- MYSQL_DATABASE = name of db to be created after image starts
+2. Create connection (DB Navigator or other tool)
+3. Add mysql-connector-j dependency to MS pom.xml
+4. MS application.yml -> provide MySQL properties + sql: init: mode: always (to run sql scripts automatically)
