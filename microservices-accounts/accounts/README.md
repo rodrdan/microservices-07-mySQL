@@ -12,5 +12,5 @@
 
 Set-up for container environment
 
-1. "localhost" in properties will not work -> in docker-compose.yml and application.yml
-2. 
+1. docker-compose.yml -> create new services (db) + add db connection env var. to ms services
+2. create new images of ms and config-server
